@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Special Birthday Wish</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            overflow-x: hidden;
+            color: #5a5a5a;
+            line-height: 1.6;
+        }
+
+        section {
+            min-height: 100vh;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            color: #ff6b9d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            font-weight: bold;
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff6b9d, #ff9eb5);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 107, 157, 0.4);
+            margin-top: 1rem;
+            outline: none;
+            font-weight: bold;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.6);
+        }
+
+        input {
+            padding: 1rem 1.5rem;
+            border: 2px solid #ffb3c6;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            width: 100%;
+            max-width: 350px;
+            margin: 0.8rem 0;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
+
+        /* Section-specific backgrounds */
+        #welcome {
+            background: linear-gradient(135deg, #ffd6e0, #c1f0f8);
+        }
+
+        #balloon-game {
+            background: linear-gradient(135deg, #c1f0f8, #e0c1ff);
+            display: none;
+        }
+
+        #final-message {
+            background: linear-gradient(135deg, #e0c1ff, #ffd6e0);
+            display: none;
+        }
+
+        #album {
+            background: linear-gradient(135deg, #ffd6e0, #c1f0f8);
+            display: none;
+        }
+
+        /* Welcome Section */
+        .welcome-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            max-width: 600px;
+            width: 90%;
+        }
+
+        /* Balloon Game Section */
+        .balloons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            margin: 3rem 0;
+            min-height: 60vh;
+        }
+
+        .balloon {
+            width: 70px;
+            height: 90px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--balloon-color1), var(--balloon-color2));
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+            cursor: pointer;
+            box-shadow: inset -7px -7px 15px rgba(0, 0, 0, 0.1);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .balloon.popped {
+            transform: scale(0.1);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-25px) rotate(2deg); }
+        }
+
+        /* Final Message Section */
+        .message-container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            max-width: 850px;
+            width: 90%;
+        }
+
+        .typing-text {
+            min-height: 300px;
+            text-align: center;
+            margin: 2rem 0;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            font-weight: bold;
+        }
+
+        .birthday-image {
+            width: 250px;
+            height: 250px;
+            margin: 2rem auto;
+            border-radius: 15px;
+            object-fit: cover;
+            box-shadow: 0 0 25px rgba(255, 107, 157, 0.6);
+            animation: neonGlow 3s infinite alternate;
+            border: 5px solid #ff6b9d;
+        }
+
+        @keyframes neonGlow {
+            0% { box-shadow: 0 0 15px rgba(255, 107, 157, 0.6); border-color: #ff6b9d; }
+            25% { box-shadow: 0 0 25px rgba(107, 255, 206, 0.6); border-color: #6bffce; }
+            50% { box-shadow: 0 0 25px rgba(107, 178, 255, 0.6); border-color: #6bb2ff; }
+            75% { box-shadow: 0 0 25px rgba(206, 107, 255, 0.6); border-color: #ce6bff; }
+            100% { box-shadow: 0 0 25px rgba(255, 107, 157, 0.6); border-color: #ff6b9d; }
+        }
+
+        /* Album Section */
+        .gallery {
+            width: 100%;
+            max-width: 700px;
+            height: 450px;
+            position: relative;
+            margin: 2rem 0;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 65%;
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .slide-caption {
+            font-size: 1.3rem;
+            color: #5a5a5a;
+            max-width: 80%;
+            line-height: 1.6;
+            font-weight: bold;
+        }
+
+        .gallery-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Iframe Container Styles */
+        #iframe-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: white;
+            z-index: 1000;
+        }
+
+        #iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #close-iframe {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            padding: 10px 20px;
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            p {
+                font-size: 1.1rem;
+            }
+            
+            .birthday-image {
+                width: 200px;
+                height: 200px;
+            }
+            
+            button {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            section {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .message-container {
+                padding: 2rem;
+            }
+            
+            .balloon {
+                width: 55px;
+                height: 80px;
+            }
+            
+            .birthday-image {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Section -->
+    <section id="welcome">
+        <div class="welcome-container">
+            <h1>🎁Happy Birthday 🎉</h1>
+            <p>Enter your name & birth year</p>
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="number" id="birthYear" placeholder="Your Birth Year (e.g., 1990)" min="1900" max="2023" required>
+            <button id="openGiftBtn">🎁 OPEN GIFT 🎁</button>
+        </div>
+    </section>
+
+    <!-- Balloon Game Section -->
+    <section id="balloon-game">
+        <h1>🎈 Pop to  🎈</h1>
+        <p>Unlock Your Surprise!</p>
+        <div class="balloons-container" id="balloonsContainer"></div>
+    </section>
+
+    <!-- Final Message Section -->
+    <section id="final-message">
+        <div class="message-container">
+            <h1>Happy Birthday! 🎉</h1>
+            <div class="typing-text" id="typingText"></div>
+            <img src="https://nephosting.pages.dev/file/file_541.jpg" alt="Birthday Person" class="birthday-image">
+            <button id="seeMoreBtn">🎁 Open Your Gift 🎁</button>
+        </div>
+    </section>
+
+    <!-- Album Section -->
+    <section id="album">
+        <h1>📸 Special Memories For You</h1>
+        <div class="gallery">
+            <div class="slide active">
+                <img src="https://nephosting.pages.dev/file/file_538.jpg" alt="Memory 1">
+                <p class="slide-caption" id="caption1">Happy birthday again, <span class="user-name">[Name]</span>! Your smile lights up every room.</p>
+            </div>
+            <div class="slide">
+                <img src="https://nephosting.pages.dev/file/file_534.jpg" alt="Memory 2">
+                <p class="slide-caption" id="caption2">You're like sunshine wrapped in kindness. Always stay the same!</p>
+            </div>
+            <div class="slide">
+                <img src="https://nephosting.pages.dev/file/file_533.jpg" alt="Memory 3">
+                <p class="slide-caption" id="caption3">In every memory, you made things more beautiful. May you always be this amazing.</p>
+            </div>
+        </div>
+        <div class="gallery-controls">
+            <button id="prevBtn">←</button>
+            <button id="nextBtn">→</button>
+        </div>
+        <button id="finalGiftBtn">💝 Open Your Final Gift 💝</button>
+    </section>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" loop>
+        <source src="https://nephosting.nepdev.org/file/file_525.m4a" type="audio/mpeg">
+    </audio>
+    <audio id="popSound">
+        <source src="https://nephosting.nepdev.org/file/file_527.m4a" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // DOM Elements
+        const welcomeSection = document.getElementById('welcome');
+        const balloonGameSection = document.getElementById('balloon-game');
+        const finalMessageSection = document.getElementById('final-message');
+        const albumSection = document.getElementById('album');
+        
+        const nameInput = document.getElementById('name');
+        const birthYearInput = document.getElementById('birthYear');
+        const openGiftBtn = document.getElementById('openGiftBtn');
+        const seeMoreBtn = document.getElementById('seeMoreBtn');
+        const finalGiftBtn = document.getElementById('finalGiftBtn');
+        
+        const balloonsContainer = document.getElementById('balloonsContainer');
+        const typingText = document.getElementById('typingText');
+        const userNameElements = document.querySelectorAll('.user-name');
+        
+        const bgMusic = document.getElementById('bgMusic');
+        const popSound = document.getElementById('popSound');
+        
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+
+        // Variables
+        let currentSlide = 0;
+        let balloonsPopped = 0;
+        let totalBalloons = 0;
+        let userName = '';
+        let userAge = 0;
+
+        // Event Listeners
+        openGiftBtn.addEventListener('click', startBirthdayWish);
+        seeMoreBtn.addEventListener('click', showAlbumSection);
+        finalGiftBtn.addEventListener('click', showFinalGift);
+        prevBtn.addEventListener('click', () => changeSlide(-1));
+        nextBtn.addEventListener('click', () => changeSlide(1));
+
+        // Functions
+        function startBirthdayWish() {
+            if (!nameInput.value || !birthYearInput.value) {
+                alert('Please enter both your name and birth year!');
+                return;
+            }
+            
+            userName = nameInput.value.trim();
+            userAge = new Date().getFullYear() - parseInt(birthYearInput.value);
+            
+            if (userAge <= 0 || userAge > 120) {
+                alert('Please enter a valid birth year between 1900 and 2023!');
+                return;
+            }
+            
+            // Store in localStorage
+            localStorage.setItem('birthdayName', userName);
+            localStorage.setItem('birthdayAge', userAge.toString());
+            
+            // Update name in album captions
+            updateUserName();
+            
+            // Start music (volume at 30%)
+            bgMusic.volume = 0.3;
+            bgMusic.play().catch(e => console.log('Auto-play prevented:', e));
+            
+            // Transition to balloon game
+            welcomeSection.style.display = 'none';
+            balloonGameSection.style.display = 'flex';
+            
+            // Create balloons
+            createBalloons(userAge);
+        }
+
+        function updateUserName() {
+            userNameElements.forEach(el => {
+                el.textContent = userName;
+            });
+        }
+
+        function createBalloons(count) {
+            totalBalloons = count;
+            balloonsContainer.innerHTML = '';
+            
+            const balloonColors = [
+                ['#ff9eb5', '#ff6b9d'], // Pink
+                ['#6bb2ff', '#4a9cff'], // Blue
+                ['#6bffce', '#4affb5'], // Green
+                ['#ce6bff', '#b84aff'], // Purple
+                ['#ffce6b', '#ffb84a']  // Yellow
+            ];
+            
+            for (let i = 1; i <= count; i++) {
+                setTimeout(() => {
+                    const balloon = document.createElement('div');
+                    balloon.className = 'balloon';
+                    balloon.textContent = i;
+                    balloon.style.animationDelay = `${i * 0.1}s`;
+                    
+                    const colorPair = balloonColors[i % balloonColors.length];
+                    balloon.style.setProperty('--balloon-color1', colorPair[0]);
+                    balloon.style.setProperty('--balloon-color2', colorPair[1]);
+                    
+                    balloon.addEventListener('click', () => popBalloon(balloon));
+                    
+                    balloonsContainer.appendChild(balloon);
+                }, i * 150);
+            }
+        }
+
+        function popBalloon(balloon) {
+            if (balloon.classList.contains('popped')) return;
+            
+            balloon.classList.add('popped');
+            popSound.currentTime = 0;
+            popSound.play();
+            
+            balloonsPopped++;
+            
+            if (balloonsPopped === totalBalloons) {
+                setTimeout(() => {
+                    balloonGameSection.style.display = 'none';
+                    finalMessageSection.style.display = 'flex';
+                    typeBirthdayMessage();
+                    scrollToSection(finalMessageSection);
+                }, 1000);
+            }
+        }
+
+        function typeBirthdayMessage() {
+            const message = `🎉 Happy ${userAge}th Birthday ${userName}! 🎉\n\n` +
+                            `You're one of the most amazing people I've ever met — kind, thoughtful, and always smiling.\n\n` +
+                            `Your positive energy is contagious, and the world is brighter with you in it.\n\n` +
+                            `I may have made some mistakes… hurt you knowingly or unknowingly.\n\n` +
+                            `Please forgive me if I ever gave you pain. I am truly sorry, my dear ${userName}.\n\n` +
+                            `You mean the world to me and today I just want to say — I'm incredibly lucky to have you in my life.\n\n` +
+                            `Wishing you a year filled with love, laughter, and all your heart's desires!\n\n` +
+                            `— With all my love, Jay`;
+            
+            let i = 0;
+            typingText.textContent = '';
+            
+            function typeWriter() {
+                if (i < message.length) {
+                    typingText.textContent += message.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, 20);
+                }
+            }
+            
+            typeWriter();
+        }
+
+        function showAlbumSection() {
+            finalMessageSection.style.display = 'none';
+            albumSection.style.display = 'flex';
+            scrollToSection(albumSection);
+        }
+
+        function showFinalGift() {
+            // Hide the album section
+            albumSection.style.display = 'none';
+            
+            // Create iframe container
+            const iframeContainer = document.createElement('div');
+            iframeContainer.id = 'iframe-container';
+            
+            // Create iframe
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://nephosting.pages.dev/file/file_575.html';
+            
+            // Create close button
+            const closeBtn = document.createElement('button');
+            closeBtn.id = 'close-iframe';
+            closeBtn.textContent = '✕ Close';
+            closeBtn.addEventListener('click', () => {
+                document.body.removeChild(iframeContainer);
+                albumSection.style.display = 'flex';
+            });
+            
+            // Add elements to container
+            iframeContainer.appendChild(iframe);
+            iframeContainer.appendChild(closeBtn);
+            
+            // Add to document
+            document.body.appendChild(iframeContainer);
+        }
+
+        function changeSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        function scrollToSection(section) {
+            window.scrollTo({
+                top: section.offsetTop,
+                behavior: 'smooth'
+            });
+        }
+
+        // Check if coming back with stored data
+        window.addEventListener('DOMContentLoaded', () => {
+            const storedName = localStorage.getItem('birthdayName');
+            const storedAge = localStorage.getItem('birthdayAge');
+            
+            if (storedName && storedAge) {
+                userName = storedName;
+                userAge = parseInt(storedAge);
+                
+                // Update name in album captions
+                updateUserName();
+                
+                welcomeSection.style.display = 'none';
+                balloonGameSection.style.display = 'flex';
+                createBalloons(userAge);
+                
+                bgMusic.volume = 0.3;
+                bgMusic.play().catch(e => console.log('Auto-play prevented:', e));
+            }
+        });
+    </script>
+</body>
+</html>
